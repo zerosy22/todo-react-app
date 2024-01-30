@@ -3,8 +3,12 @@ import './App.css';
 
 import React from 'react';
 import ToDo from "./ToDo";
+import AddToDo from './AddToDo';
+
+import {Paper, List, Container} from "@material-ui/core"
 
 import Sample from './Sample';
+
 // import 클래스이름(export 한 것) from 파일이름 - 이름 맞추면 편해요
 // ./ 안 써도 되는 데 파일이름인 것을 강조하기 위해서
 
@@ -30,13 +34,25 @@ class App extends React.Component {
     // javascript 변수 선언 중 아무것도 안 붙이면 전역 변수/ 
     // var을 붙이면 만들기 전에도 사용 가능 let을 붙이면 만들기 전에는 사용 불가능. let이 최근의 방식
     // const 는 상수
-    var display = this.state.items.map((item, idx) => (
-      <ToDo item={item} key={item.id} />
-    ));
-    // 태그 쓰고는 반복문을 못 씀
+    var display = this.state.items.length > 0 && (  // 데이터가 없으면 안 하겠다.
+      <Paper styple={{margin:16}}>
+        <List>
+          {this.state.items.map((item, idx) => (
+            // <ToDo item={item} id={item.id}/>
+            <ToDo item={item} id={idx}/>
+            // <ToDo item={item} key={idx}/>
+            // 둘이 같다
+          ))}
+        </List>
+      </Paper>
+    )
+
     return(
       <div className="App">
-        {display}
+        <Container maxWidth="md">
+          <AddToDo />
+          {display}
+        </Container>
       </div>
     )
   }

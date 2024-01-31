@@ -38,7 +38,7 @@ class App extends React.Component {
       let data = JSON.parse(request.responseText);
       console.log(data)
       // 서버에서 받아온 데이터를 state에 대입해서 화면에 출력
-      this.setState({items:data})
+      this.setState({items:data.list})
     })
   }
 

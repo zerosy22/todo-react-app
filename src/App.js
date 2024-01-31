@@ -16,25 +16,12 @@ class App extends React.Component {
   // 데이터를 만들기 위한 생성자
   constructor(props){
     super(props)
-    // this.state.item = {id:0, "title":"Hello React", "done":true}
     // App.js 에 this.state.item 이라는 이름으로 데이터를 생성
-    // ToDo 에게 item 이라는 이름으로 데이터를 전달
-    // 3개의 객체를 가진 배열을 생성
-    this.state = {items:[{id:0, "title":"react", "done":true},
-                         {id:1, "title":"vue", "done":true},
-                         {id:2, "title":"angular", "done":true}]
-                 }
+    this.state = {items:[]}
   }
 
   // 데이터를 추가하는 함수
   add = (item) => {
-    // react는 props는 수정할 수 없고
-    // state는 수정이 가능하지만 원본을 직접 수정하는 것은 안되고
-    // setState 메서드를 이용해서만 수정이 가능합니다.
-    // react는 바뀐곳을 원본과 비교해서 바뀐곳을 출력해주기 때문에
-    // 바뀐곳이 나중에 다시 원본으로 들어감
-    // 관계형 데이터 베이스 와 원리가 같다. commit 과 rollback 이 이와 같음
-
     // 배열에 데이터를 추가하기 위해서 state의 배열을 복사
     const thisItems = this.state.items;
 
@@ -48,22 +35,26 @@ class App extends React.Component {
     this.setState({items:thisItems});
   }
 
+  // 삭제를 위한 메서드
+  delete = (item) => {  // delete(이름), item(매개변수)
+    // state나 props의 데이터는 직접 편집이 안됩니다.
+    const thisItems = this.state.items;   // 복사
+
+    // 복사본에서 item을 제거
+    const newItems = thisItems.filter((e) => e.id !== item.id);
+    
+    // 원본에 다시 복사
+    this.setState({items:newItems})
+    
+  }
+
   render(){
-    // 배열을 순회하면서 출력할 내용을 생성
-    // item은 배열을 순회할 때 각각의 데이터이고 idx는 인덱스
-    // 배열을 순회하면서 출력물을 만들 때는 key를 설정해주어야 합니다.
-    // key를 설정하지 않으면 출력에는 문제가 없지만 콘솔에 에러가 출력됩니다.
-    // javascript 변수 선언 중 아무것도 안 붙이면 전역 변수/ 
-    // var을 붙이면 만들기 전에도 사용 가능 let을 붙이면 만들기 전에는 사용 불가능. let이 최근의 방식
-    // const 는 상수
     var display = this.state.items.length > 0 && (  // 데이터가 없으면 안 하겠다.
       <Paper styple={{margin:16}}>
         <List>
           {this.state.items.map((item, idx) => (
-            // <ToDo item={item} id={item.id}/>
-            <ToDo item={item} id={idx}/>
-            // <ToDo item={item} key={idx}/>
-            // 둘이 같다
+            <ToDo item={item} key={idx} delete={this.delete} />
+            
           ))}
         </List>
       </Paper>

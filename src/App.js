@@ -20,6 +20,29 @@ class App extends React.Component {
     this.state = {items:[]}
   }
 
+
+  // 화면이 보여질 때 마다 호출되는 수명주기 함수
+  componentDidMount(){
+    // ajax 요청 객체 생성
+    let request = new XMLHttpRequest();
+    // 요청 준비
+    request.open('GET', "http://127.0.0.1/todo/?userid=adam3");
+    // 요청
+    request.send('');
+    // 응답 처리
+    request.addEventListener('load', () => {
+      // json 데이터 출력
+      // console.log(request.responseText)
+
+      // JSON 문자열을 데이터로 변환 parsing
+      let data = JSON.parse(request.responseText);
+      console.log(data)
+      // 서버에서 받아온 데이터를 state에 대입해서 화면에 출력
+      this.setState({items:data})
+    })
+  }
+
+
   // 데이터를 추가하는 함수
   add = (item) => {
     // 배열에 데이터를 추가하기 위해서 state의 배열을 복사
@@ -35,6 +58,7 @@ class App extends React.Component {
     this.setState({items:thisItems});
   }
 
+
   // 삭제를 위한 메서드
   delete = (item) => {  // delete(이름), item(매개변수)
     // state나 props의 데이터는 직접 편집이 안됩니다.
@@ -45,8 +69,8 @@ class App extends React.Component {
     
     // 원본에 다시 복사
     this.setState({items:newItems})
-    
   }
+
 
   render(){
     var display = this.state.items.length > 0 && (  // 데이터가 없으면 안 하겠다.
